@@ -27,9 +27,8 @@ MODEL_WEIGHTS = 'runs/detect/train5/weights/best.pt'
 
 
 # TO Produce results only run from the produce results only section
+1. Run the code untill extracting zip file
 
-1. You need to run in T4 GPU in coab to run the Code_Final_training.ipynb
-
-2. Run the code untill extracting zip file
+2. Extract the contents of crack_detection into runs/detection/
 
 3. Run the rest of the code from the Produce results section (check the latest produced PDF to see the results in runs/detect) 
