@@ -5,6 +5,7 @@
 
 3. Change data.yaml after extracting the zip file to the following
 
+```yaml
 path: /content/dataset
 
 train: train/images
