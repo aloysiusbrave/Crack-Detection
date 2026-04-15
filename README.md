@@ -1,4 +1,4 @@
-### TO Run training and results
+# TO Run training and results
 1. You need to run in T4 GPU in colab to run the Code_Final_training.ipynb training part
 
 2. Run the code untill extracting zip file
@@ -26,7 +26,7 @@ MODEL_WEIGHTS = 'runs/detect/train5/weights/best.pt'
 
 
 
-### TO Produce results only run from the produce results only section
+# TO Produce results only run from the produce results only section
 
 1. You need to run in T4 GPU in coab to run the Code_Final_training.ipynb
 
