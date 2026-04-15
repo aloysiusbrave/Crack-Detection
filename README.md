@@ -16,6 +16,7 @@ names:
   0: crack
   1: hole
   2: spalling
+```
 
 4. Run the training (it will take an hour and a half)
 
