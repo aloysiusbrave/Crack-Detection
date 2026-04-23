@@ -59,6 +59,47 @@ In the Colab file browser (folder icon on the left), upload both zips to the `/c
 - **Cell 10** — points Ultralytics' dataset search path at `/content`
 - **Cell 11** — clamps any out-of-bounds label coordinates (required, some test labels go slightly outside $[0,1]$)
 
+### Step 3.5. Fix `data.yaml`
+
+**This step is required and is easy to miss.** The `data.yaml` file that ships inside the Roboflow zip assumes a local directory layout that does not exist in Colab:
+
+```yaml
+path: ../datasets/roboflow
+
+train: train/images
+val: valid/images
+test: test/images
+```
+
+Ultralytics will fail to find the images because `../datasets/roboflow` resolves to nothing on the Colab filesystem. Open `/content/dataset/data.yaml` (double-click it in the Colab file browser, or run `!cat /content/dataset/data.yaml` to inspect it) and edit the first line so the `path:` key points at your actual dataset root. Change:
+
+```yaml
+path: ../datasets/roboflow
+```
+
+to:
+
+```yaml
+path: /content/dataset
+```
+
+Leave the `train`, `val`, `test`, and `names` entries alone. The full corrected file should read:
+
+```yaml
+path: /content/dataset
+
+train: train/images
+val: valid/images
+test: test/images
+
+names:
+  0: crack
+  1: hole
+  2: spalling
+```
+
+Save the file. If you ever re-unzip the dataset (e.g. in a new Colab session), you will have to redo this edit — the zip always ships the Roboflow-relative path.
+
 ### Step 4. SKIP the training cell
 
 **Do not run cell 6.** That cell is the training loop and takes roughly 45 minutes on a T4. The weights it would produce are already inside `Results.zip`.
@@ -105,7 +146,7 @@ When **you** train, Ultralytics will instead save checkpoints to `/content/runs/
 
 ### Step 1. Setup
 
-Same as Option A, steps 1–3, except you only need to unzip the bridge crack dataset (cell 3). You do **not** need `Results.zip` for this path.
+Same as Option A, steps 1–3, **including the `data.yaml` edit in Step 3.5** — you must still change `path: ../datasets/roboflow` to `path: /content/dataset` or training will fail to locate the images. You do **not** need `Results.zip` for this path.
 
 ### Step 2. Train YOLOv8m
 
@@ -209,6 +250,8 @@ These are the numbers from `Results.zip` and reported in Table 1 of the paper. Y
 **`FileNotFoundError` on `best.pt`** — you either forgot to unzip `Results.zip` (Option A) or you're pointing the evaluation cells at the old frozen paths instead of your newly-trained ones (Option B). Run `!find /content -name 'best.pt'` to see every checkpoint currently on disk.
 
 **`dataset.yaml` not found** — cell 3 didn't run, or the zip name doesn't match. The dataset should extract to `/content/dataset/data.yaml`.
+
+**Training / validation crashes with "images not found" or a path error** — you almost certainly skipped the `data.yaml` edit in Step 3.5. The Roboflow zip hardcodes `path: ../datasets/roboflow`, which doesn't exist in Colab. Open `/content/dataset/data.yaml` and change that line to `path: /content/dataset`.
 
 **`cv2.imread` returns `None`** — a corrupt or non-image file slipped into the inference folder. Cell 8's glob already filters by extension, but if you added a custom folder, make sure it contains only `.jpg` / `.jpeg` / `.png` files.
 
