@@ -258,9 +258,3 @@ These are the numbers from `Results.zip` and reported in Table 1 of the paper. Y
 **Training takes forever / OOMs** — you're probably not on a T4. Either switch runtime to T4 GPU, or lower `imgsz` from 640 to 416 in cell 6.
 
 **Stale label cache warning** — cell 11 handles this; just re-run it.
-
----
-
-## Citation
-
-If you use this code or the accompanying report, please cite the term paper (see the `.tex` / `.pdf` in the report submission).
